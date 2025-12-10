@@ -21,24 +21,20 @@ export interface SoundObjectProps {
   onInteract: (type: string, position: [number, number, number]) => void;
 }
 
-// Augment JSX.IntrinsicElements to satisfy TypeScript in environments
-// where R3F types might not be automatically picked up.
+// Augment global JSX.IntrinsicElements to satisfy TypeScript
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      // Core Three.js elements used in R3F
-      group: any;
-      mesh: any;
-      points: any;
-      bufferGeometry: any;
-      bufferAttribute: any;
-      shaderMaterial: any;
-      sphereGeometry: any;
-      meshBasicMaterial: any;
-      color: any;
-      fog: any;
-      
-      // Allow any other element to prevent build errors
+      // Catch-all for R3F elements (mesh, group, points, etc.)
+      [elemName: string]: any;
+    }
+  }
+}
+
+// Augment React's internal JSX namespace for React 18+ strict types
+declare module 'react' {
+  namespace JSX {
+    interface IntrinsicElements {
       [elemName: string]: any;
     }
   }
