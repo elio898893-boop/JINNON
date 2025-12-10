@@ -62,7 +62,7 @@ class AudioEngine {
         return null;
     };
 
-    // Load all assets - REMOVED LEADING SLASHES for relative path resolution
+    // Load all assets - Using relative paths
     this.birdBuffer = await loadBuffer('ambient.mp3'); 
     this.windBuffer = await loadBuffer('wind.mp3');
     this.leavesBuffer = await loadBuffer('leaves.mp3'); 

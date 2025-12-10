@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum AppMode {
   INTRO = 'INTRO',
   TUNING = 'TUNING',
@@ -34,6 +36,10 @@ declare global {
       meshBasicMaterial: any;
       color: any;
       fog: any;
+      primitive: any;
+      ambientLight: any;
+      pointLight: any;
+      directionalLight: any;
     }
   }
 }
