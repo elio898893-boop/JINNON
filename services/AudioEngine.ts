@@ -47,22 +47,26 @@ class AudioEngine {
     this.init();
     if (!this.ctx) return;
 
-    const loadBuffer = async (path: string): Promise<AudioBuffer | null> => {
-        try {
-            const res = await fetch(path);
-            if (res.ok) {
-                const arr = await res.arrayBuffer();
-                return await this.ctx!.decodeAudioData(arr);
-            } else {
-                console.warn(`Failed to fetch ${path}: ${res.status} ${res.statusText}`);
+    // Enhanced loader: Tries relative path first, then absolute path (common Vercel issue)
+    const loadBuffer = async (filename: string): Promise<AudioBuffer | null> => {
+        const pathsToTry = [`./${filename}`, `/${filename}`];
+        
+        for (const path of pathsToTry) {
+            try {
+                const res = await fetch(path);
+                if (res.ok) {
+                    const arr = await res.arrayBuffer();
+                    return await this.ctx!.decodeAudioData(arr);
+                }
+            } catch (e) {
+                // Ignore and try next path
             }
-        } catch (e) {
-            console.warn(`Could not load ${path}`, e);
         }
+        console.warn(`Could not load audio asset: ${filename}`);
         return null;
     };
 
-    // Load all assets - Using relative paths
+    // Load all assets
     this.birdBuffer = await loadBuffer('ambient.mp3'); 
     this.windBuffer = await loadBuffer('wind.mp3');
     this.leavesBuffer = await loadBuffer('leaves.mp3'); 
@@ -70,7 +74,7 @@ class AudioEngine {
     this.rainBuffer = await loadBuffer('rain.mp3');
     this.insectBuffer = await loadBuffer('insect.mp3');
     
-    console.log("Audio assets loaded (or attempted).");
+    console.log("Audio assets loading routine complete.");
   }
 
   // Phase 1: Tinnitus Matching

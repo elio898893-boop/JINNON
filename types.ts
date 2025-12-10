@@ -26,6 +26,7 @@ export interface SoundObjectProps {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
+      // Core Three.js elements used in R3F
       group: any;
       mesh: any;
       points: any;
@@ -36,10 +37,9 @@ declare global {
       meshBasicMaterial: any;
       color: any;
       fog: any;
-      primitive: any;
-      ambientLight: any;
-      pointLight: any;
-      directionalLight: any;
+      
+      // Allow any other element to prevent build errors
+      [elemName: string]: any;
     }
   }
 }
